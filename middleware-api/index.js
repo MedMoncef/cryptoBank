@@ -1,6 +1,9 @@
+import express from 'express';
+import dotenv from 'dotenv';
+import { createProxyMiddleware } from 'http-proxy-middleware';
+dotenv.config();
+
 // middleware/index.js
-const express = require('express');
-const { createProxyMiddleware } = require('http-proxy-middleware');
 const app = express();
 
 // Configuration
@@ -31,7 +34,7 @@ const transactionsProxy = createProxyMiddleware({
     pathRewrite: {
       '^/api/transactions': '',
     },
-  });
+});
 
 // Routes
 app.use('/api/users', usersProxy);
@@ -44,7 +47,8 @@ app.use((err, req, res, next) => {
   res.status(500).json({ error: 'Internal Server Error' });
 });
 
-const PORT = 3002;
+const PORT = process.env.PORT || 3000;
+
 app.listen(PORT, () => {
   console.log(`API Gateway running on port ${PORT}`);
 });
