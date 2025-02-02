@@ -1,0 +1,13 @@
+@startuml User
+
+class User {
+    - Nom : String <<required>>
+    - Email : String <<required>>
+    - Telephone : String <<optional>>
+    - MotDePasse : String <<required>>
+    - Statut : Enum <<required>>
+    - StatutVerificationEmail : Boolean <<optional>>
+    - StatutVerificationTelephone : Boolean <<optional>>
+}
+
+@enduml
