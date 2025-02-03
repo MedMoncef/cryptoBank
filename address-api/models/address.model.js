@@ -7,4 +7,12 @@ const addressSchema = new mongoose.Schema({
     userId: { type: String, required: true, default: null },
 });
 
+addressSchema.virtual('id').get(function () {
+    return this._id.toHexString();
+});
+
+addressSchema.set('toJSON', {
+    virtuals: true,
+});
+
 export default mongoose.model('Address', addressSchema);

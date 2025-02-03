@@ -2,33 +2,33 @@ import axios from 'axios';
 import User from '../models/user.model.js';
 import CustomError from '../utils/CustomError.js';
 
-// You should store this in an environment variable
-const ADDRESS_SERVICE_URL = 'http://localhost:3001/api'; // adjust port as needed
+const ADDRESS_SERVICE_URL = 'http://localhost:5000/api/addresses/api/addresses';
 
 export const createUser = async (req, res, next) => {
   try {
     const { addressData, ...userData } = req.body;
     
-    // First create the user
     const user = new User(userData);
     await user.save();
 
-    // If address data is provided, create address in the address service
     if (addressData) {
       try {
-        // Add the user ID to the address data
         const addressPayload = {
           ...addressData,
-          userId: user.id // Using the virtual 'id' field we defined
+          userId: user.id
         };
 
-        // Create address in the address service
-        await axios.post(`${ADDRESS_SERVICE_URL}/addresses`, addressPayload);
+        const addressResponse = await axios.post(ADDRESS_SERVICE_URL, addressPayload);
         
-        // Note: We don't need to update the user with the address ID
-        // since the address service maintains the relationship via userId
+        user.address = addressResponse.data.id;
+        await user.save();
+
+        return res.status(201).json({
+          ...user.toJSON(),
+          address: addressResponse.data
+        });
+        
       } catch (error) {
-        // If address creation fails, we should delete the user we just created
         await User.findByIdAndDelete(user.id);
         throw new CustomError(
           `Failed to create address: ${error.response?.data?.message || error.message}`,
@@ -47,25 +47,32 @@ export const getAllUsers = async (req, res, next) => {
   try {
     const users = await User.find();
     
-    // Optionally, if you need to include address information
-    // you could fetch addresses for all users here
     try {
-      const addressesResponse = await axios.get(`${ADDRESS_SERVICE_URL}/addresses/addresses`);
-      const addresses = addressesResponse.data;
-      
-      // Map addresses to users
-      const usersWithAddresses = users.map(user => {
-        const userAddress = addresses.find(addr => addr.userId === user.id);
+      const usersWithAddresses = await Promise.all(users.map(async user => {
+        if (user.address) {
+          try {
+            const addressResponse = await axios.get(`${ADDRESS_SERVICE_URL}/${user.address}`);
+            return {
+              ...user.toJSON(),
+              address: addressResponse.data
+            };
+          } catch (error) {
+            console.error(`Failed to fetch address for user ${user.id}:`, error.message);
+            return {
+              ...user.toJSON(),
+              address: "Address doesn't exist anymore"
+            };
+          }
+        }
         return {
           ...user.toJSON(),
-          address: userAddress || null
+          address: null
         };
-      });
+      }));
       
       res.status(200).json(usersWithAddresses);
     } catch (error) {
-      // If address service is down, return users without addresses
-      console.error('Failed to fetch addresses:', error.message);
+      console.error('Failed to process users with addresses:', error.message);
       res.status(200).json(users);
     }
   } catch (error) {
@@ -77,15 +84,13 @@ export const assignAddressToUser = async (req, res, next) => {
   try {
     const { userId, addressId } = req.params;
 
-    // First verify the user exists
     const user = await User.findById(userId);
     if (!user) {
       throw new CustomError('User not found', 404);
     }
 
-    // Then verify and update the address in the address service
     try {
-      await axios.patch(`${ADDRESS_SERVICE_URL}/addresses/${addressId}`, {
+      await axios.patch(`${ADDRESS_SERVICE_URL}/${addressId}`, {
         userId: userId
       });
     } catch (error) {
@@ -99,6 +104,108 @@ export const assignAddressToUser = async (req, res, next) => {
     }
 
     res.status(200).json(user);
+  } catch (error) {
+    next(new CustomError(error.message, error.status || 400));
+  }
+};
+
+export const getUserById = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.params.id);
+    
+    if (!user) {
+      throw new CustomError('User not found', 404);
+    }
+
+    try {
+      if (user.address) {
+        const addressResponse = await axios.get(`${ADDRESS_SERVICE_URL}/${user.address}`);
+        return res.status(200).json({
+          ...user.toJSON(),
+          address: addressResponse.data
+        });
+      }
+      
+      res.status(200).json({
+        ...user.toJSON(),
+        address: null
+      });
+
+    } catch (error) {
+      console.error('Failed to fetch address:', error.message);
+      res.status(200).json({
+        ...user.toJSON(),
+        address: null
+      });
+    }
+  } catch (error) {
+    next(new CustomError(error.message, error.status || 500));
+  }
+};
+
+export const updateUser = async (req, res, next) => {
+  try {
+    const userId = req.params.id;
+    const { addressData, ...userData } = req.body;
+
+    // Find and update user
+    const user = await User.findById(userId);
+    if (!user) {
+      throw new CustomError('User not found', 404);
+    }
+
+    // Update user fields
+    Object.keys(userData).forEach(field => {
+      if (field !== 'id' && field !== '_id') { // Prevent modification of IDs
+        user[field] = userData[field];
+      }
+    });
+
+    // Handle address update if provided
+    if (addressData) {
+      try {
+        if (user.address) {
+          // Update existing address
+          await axios.patch(`${ADDRESS_SERVICE_URL}/${user.address}`, {
+            ...addressData,
+            userId: user.id
+          });
+          
+          // Get updated address
+          const addressResponse = await axios.get(`${ADDRESS_SERVICE_URL}/${user.address}`);
+          await user.save();
+          
+          return res.status(200).json({
+            ...user.toJSON(),
+            address: addressResponse.data
+          });
+        } else {
+          // Create new address
+          const addressResponse = await axios.post(ADDRESS_SERVICE_URL, {
+            ...addressData,
+            userId: user.id
+          });
+          
+          user.address = addressResponse.data.id;
+          await user.save();
+          
+          return res.status(200).json({
+            ...user.toJSON(),
+            address: addressResponse.data
+          });
+        }
+      } catch (error) {
+        throw new CustomError(
+          `Failed to update address: ${error.response?.data?.message || error.message}`,
+          error.response?.status || 500
+        );
+      }
+    }
+
+    // Save user without address changes
+    await user.save();
+    res.status(200).json(user);
+
   } catch (error) {
     next(new CustomError(error.message, error.status || 400));
   }

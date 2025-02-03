@@ -2,28 +2,27 @@ import Address from '../models/address.model.js';
 import CustomError from '../utils/CustomError.js';
 import axios from 'axios';
 
+const USERS_SERVICE_URL = 'http://localhost:5000/api/users/api/users';
+
 // Create address
 export const createAddress = async (req, res, next) => {
     try {
         const { userId, street, city, postalCode } = req.body;
 
-        // Check if userId is provided
         if (!userId) {
             return next(new CustomError('User ID is required', 400));
         }
 
-        // Check if the user exists using the external API
         try {
-            const response = await axios.get(`https://api-test.com/api/userExist/${userId}`);
-            if (!response.data.exists) {
+            const response = await axios.get(`${USERS_SERVICE_URL}/${userId}`);
+
+            if (!response.data.id) {
                 return next(new CustomError('User does not exist', 404));
             }
         } catch (error) {
-            // Handle API errors (e.g., network issues, invalid response)
             return next(new CustomError('Failed to verify user existence', 500));
         }
 
-        // Create the address
         const address = new Address({
             street,
             city,

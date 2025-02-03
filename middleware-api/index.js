@@ -15,25 +15,16 @@ const TRANSACTIONS_API = 'http://localhost:3003';
 const usersProxy = createProxyMiddleware({
   target: USERS_API,
   changeOrigin: true,
-  pathRewrite: {
-    '^/api/users': '',
-  },
 });
 
 const addressesProxy = createProxyMiddleware({
   target: ADDRESSES_API,
   changeOrigin: true,
-  pathRewrite: {
-    '^/api/addresses': '',
-  },
 });
 
 const transactionsProxy = createProxyMiddleware({
     target: TRANSACTIONS_API,
     changeOrigin: true,
-    pathRewrite: {
-      '^/api/transactions': '',
-    },
 });
 
 // Routes
@@ -47,7 +38,7 @@ app.use((err, req, res, next) => {
   res.status(500).json({ error: 'Internal Server Error' });
 });
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
   console.log(`API Gateway running on port ${PORT}`);
