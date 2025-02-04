@@ -1,6 +1,6 @@
 @startuml ClassDiagram
 
-class User {
+abstract class User {
     - Nom : String <<required>>
     - Email : String <<required>>
     - Telephone : String <<optional>>
@@ -24,6 +24,7 @@ class Wallet {
     + addFunds(amount: Double)
     + withdrawFunds(amount: Double)
     + viewBalance() : Double
+    + processTransaction(transaction: Transaction)
 }
 
 class Transaction {
@@ -69,14 +70,12 @@ class Staff {
     + assisterUtilisateursKYC()
 }
 
-User "1" -- "1..*" Wallet : owns
-User "1" -- "0..*" Transaction : initiates
-User "1" -- "1" KYC : has
-User <|-- Merchant : specializes
-User <|-- Admin : specializes
-User <|-- Staff : specializes
-Merchant "1" -- "0..*" Transaction : processes
-Admin "1" -- "0..*" User : manages
-Staff "1" -- "0..*" User : assists
+User <|-- Merchant
+User <|-- Admin
+User <|-- Staff
+
+User "1" -- "1" Wallet
+Wallet "1" -- "0..*" Transaction
+User "1" -- "1" KYC
 
 @enduml
