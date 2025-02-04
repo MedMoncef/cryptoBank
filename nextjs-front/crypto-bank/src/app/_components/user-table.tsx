@@ -6,7 +6,7 @@ import { Edit, Trash2 } from "lucide-react"
 interface UserTableProps {
   users: User[]
   onEdit: (user: User) => void
-  onDelete: (id: string) => void
+  onDelete: (user: User) => void
 }
 
 export function UserTable({ users, onEdit, onDelete }: UserTableProps) {
@@ -34,7 +34,7 @@ export function UserTable({ users, onEdit, onDelete }: UserTableProps) {
               <Button variant="ghost" size="icon" onClick={() => onEdit(user)}>
                 <Edit className="h-4 w-4" />
               </Button>
-              <Button variant="ghost" size="icon" onClick={() => onDelete(user._id)}>
+              <Button variant="ghost" size="icon" onClick={() => onDelete(user)}>
                 <Trash2 className="h-4 w-4" />
               </Button>
             </TableCell>

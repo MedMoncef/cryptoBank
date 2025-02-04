@@ -1,30 +1,34 @@
+import type React from "react"
 import { useState } from "react"
-import type { User } from "@/lib/api"
+import type { User, UserSubmissionData } from "@/lib/api"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Switch } from "@/components/ui/switch"
 
 interface UserFormProps {
   user?: User | null
-  onSubmit: (id: string | undefined, user: Partial<User>) => void
+  onSubmit: (id: string | undefined, user: UserSubmissionData) => void
   onCancel: () => void
 }
 
 export function UserForm({ user, onSubmit, onCancel }: UserFormProps) {
-  const [formData, setFormData] = useState<Partial<User>>(
-    user || {
-      nom: "",
-      email: "",
-      motDePasse: "",
-      statut: "ACTIVE",
-      address: {
-        street: "",
-        city: "",
-        postalCode: "",
-      },
-    },
-  )
+  const [includeAddress, setIncludeAddress] = useState(!!user?.address)
+  const [formData, setFormData] = useState<UserSubmissionData>({
+    nom: user?.nom || "",
+    email: user?.email || "",
+    telephone: user?.telephone || "",
+    motDePasse: "",
+    addressData: user?.address
+      ? {
+          street: user.address.street || "",
+          city: user.address.city || "",
+          state: "", // Not present in the fetched data
+          postalCode: user.address.postalCode || "",
+          country: "", // Not present in the fetched data
+        }
+      : undefined,
+  })
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
@@ -38,8 +42,8 @@ export function UserForm({ user, onSubmit, onCancel }: UserFormProps) {
     const { name, value } = e.target
     setFormData((prev) => ({
       ...prev,
-      address: {
-        ...prev.address,
+      addressData: {
+        ...prev.addressData,
         [name]: value,
       },
     }))
@@ -47,7 +51,17 @@ export function UserForm({ user, onSubmit, onCancel }: UserFormProps) {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    onSubmit(user?._id, formData)
+    const submissionData = { ...formData }
+    if (user) {
+      // If updating, remove the password field unless it's been changed
+      if (!formData.motDePasse) {
+        delete submissionData.motDePasse
+      }
+    }
+    if (!includeAddress) {
+      delete submissionData.addressData
+    }
+    onSubmit(user?._id, submissionData)
   }
 
   return (
@@ -60,6 +74,10 @@ export function UserForm({ user, onSubmit, onCancel }: UserFormProps) {
         <Label htmlFor="email">Email</Label>
         <Input id="email" name="email" type="email" value={formData.email} onChange={handleChange} required />
       </div>
+      <div>
+        <Label htmlFor="telephone">Telephone</Label>
+        <Input id="telephone" name="telephone" value={formData.telephone} onChange={handleChange} />
+      </div>
       {!user && (
         <div>
           <Label htmlFor="motDePasse">Password</Label>
@@ -69,38 +87,43 @@ export function UserForm({ user, onSubmit, onCancel }: UserFormProps) {
             type="password"
             value={formData.motDePasse}
             onChange={handleChange}
-            required
+            required={!user}
           />
         </div>
       )}
-      <div>
-        <Label htmlFor="statut">Status</Label>
-        <Select
-          name="statut"
-          value={formData.statut}
-          onValueChange={(value) => setFormData((prev) => ({ ...prev, statut: value as "ACTIVE" | "INACTIVE" }))}
-        >
-          <SelectTrigger>
-            <SelectValue placeholder="Select status" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="ACTIVE">Active</SelectItem>
-            <SelectItem value="INACTIVE">Inactive</SelectItem>
-          </SelectContent>
-        </Select>
+      <div className="flex items-center space-x-2">
+        <Switch id="include-address" checked={includeAddress} onCheckedChange={setIncludeAddress} />
+        <Label htmlFor="include-address">Include Address</Label>
       </div>
-      <div>
-        <Label htmlFor="street">Street</Label>
-        <Input id="street" name="street" value={formData.address?.street} onChange={handleAddressChange} />
-      </div>
-      <div>
-        <Label htmlFor="city">City</Label>
-        <Input id="city" name="city" value={formData.address?.city} onChange={handleAddressChange} />
-      </div>
-      <div>
-        <Label htmlFor="postalCode">Postal Code</Label>
-        <Input id="postalCode" name="postalCode" value={formData.address?.postalCode} onChange={handleAddressChange} />
-      </div>
+      {includeAddress && (
+        <>
+          <div>
+            <Label htmlFor="street">Street</Label>
+            <Input id="street" name="street" value={formData.addressData?.street} onChange={handleAddressChange} />
+          </div>
+          <div>
+            <Label htmlFor="city">City</Label>
+            <Input id="city" name="city" value={formData.addressData?.city} onChange={handleAddressChange} />
+          </div>
+          <div>
+            <Label htmlFor="state">State</Label>
+            <Input id="state" name="state" value={formData.addressData?.state} onChange={handleAddressChange} />
+          </div>
+          <div>
+            <Label htmlFor="postalCode">Postal Code</Label>
+            <Input
+              id="postalCode"
+              name="postalCode"
+              value={formData.addressData?.postalCode}
+              onChange={handleAddressChange}
+            />
+          </div>
+          <div>
+            <Label htmlFor="country">Country</Label>
+            <Input id="country" name="country" value={formData.addressData?.country} onChange={handleAddressChange} />
+          </div>
+        </>
+      )}
       <div className="flex justify-end space-x-2">
         <Button type="button" variant="outline" onClick={onCancel}>
           Cancel

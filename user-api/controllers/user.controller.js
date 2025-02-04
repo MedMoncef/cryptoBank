@@ -210,3 +210,35 @@ export const updateUser = async (req, res, next) => {
     next(new CustomError(error.message, error.status || 400));
   }
 };
+
+
+export const deleteUser = async (req, res, next) => {
+  try {
+    const userId = req.params.id;
+
+    // Find user first to check if exists and get address reference
+    const user = await User.findById(userId);
+    if (!user) {
+      throw new CustomError('User not found', 404);
+    }
+
+    // Delete associated address if exists
+    if (user.address) {
+      try {
+        await axios.delete(`${ADDRESS_SERVICE_URL}/${user.address}`);
+      } catch (error) {
+        console.error(`Failed to delete address for user ${userId}:`, error.message);
+        // Continue with user deletion even if address deletion fails
+      }
+    }
+
+    // Delete the user
+    await User.findByIdAndDelete(userId);
+
+    res.status(200).json({
+      message: 'User deleted successfully'
+    });
+  } catch (error) {
+    next(new CustomError(error.message, error.status || 400));
+  }
+};

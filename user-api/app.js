@@ -1,8 +1,16 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import userRoutes from './routes/user.routes.js';
+import cors from 'cors';
 
 const app = express();
+
+app.use(cors({
+  origin: '*',
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
+
 app.use(express.json());
 
 mongoose.connect('mongodb://localhost:27017/Bank').then(() => console.log('Connected to MongoDB'))

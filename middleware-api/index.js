@@ -41,5 +41,5 @@ app.use((err, req, res, next) => {
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
-  console.log(`API Gateway running on port ${PORT}`);z
+  console.log(`API Gateway running on port ${PORT}`);
 });
