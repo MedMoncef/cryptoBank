@@ -1,0 +1,82 @@
+@startuml ClassDiagram
+
+class User {
+    - Nom : String <<required>>
+    - Email : String <<required>>
+    - Telephone : String <<optional>>
+    - MotDePasse : String <<required>>
+    - Statut : Enum <<required>>
+    - StatutVerificationEmail : Boolean <<optional>>
+    - StatutVerificationTelephone : Boolean <<optional>>
+    --
+    + gererCompte()
+    + gererPortefeuille()
+    + gererTransactions()
+    + acheterVendreCrypto()
+    + gererIdentite()
+    + consulterHistoriqueTransactions()
+}
+
+class Wallet {
+    - balance : Double
+    - currency : String
+    --
+    + addFunds(amount: Double)
+    + withdrawFunds(amount: Double)
+    + viewBalance() : Double
+}
+
+class Transaction {
+    - transactionId : String
+    - amount : Double
+    - date : Date
+    - status : Enum
+    --
+    + initiateTransaction()
+    + viewTransactionDetails()
+}
+
+class KYC {
+    - userId : String
+    - status : Enum
+    - documents : List<String>
+    --
+    + submitDocuments()
+    + verifyIdentity()
+}
+
+class Merchant {
+    - merchantId : String
+    - paymentSettings : String
+    --
+    + gererPaiements()
+    + gererTransactionsMarchand()
+    + gererParametresPaiement()
+    + consulterRapports()
+}
+
+class Admin {
+    + gererUtilisateurs()
+    + superviserTransactions()
+    + gererConformite()
+    + gererCryptos()
+    + consulterStatistiquesRapports()
+}
+
+class Staff {
+    + gererSupport()
+    + modererContenus()
+    + assisterUtilisateursKYC()
+}
+
+User "1" -- "1..*" Wallet : owns
+User "1" -- "0..*" Transaction : initiates
+User "1" -- "1" KYC : has
+User <|-- Merchant : specializes
+User <|-- Admin : specializes
+User <|-- Staff : specializes
+Merchant "1" -- "0..*" Transaction : processes
+Admin "1" -- "0..*" User : manages
+Staff "1" -- "0..*" User : assists
+
+@enduml
