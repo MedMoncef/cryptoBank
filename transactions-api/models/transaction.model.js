@@ -6,6 +6,12 @@ const TransactionStatus = {
   FAILED: 'FAILED'
 };
 
+const TransactionType = {
+  DEPOSIT: 'DEPOSIT',
+  WITHDRAWAL: 'WITHDRAWAL',
+  TRANSFER: 'TRANSFER'
+};
+
 const transactionSchema = new mongoose.Schema({
   sender: {
     type: String,
@@ -18,6 +24,18 @@ const transactionSchema = new mongoose.Schema({
   amount: {
     type: mongoose.Decimal128,
     required: [true, 'Amount is required']
+  },
+  walletId: {
+    type: String,
+    required: [true, 'Wallet ID is required']
+  },
+  type: {
+    type: String,
+    enum: {
+      values: Object.values(TransactionType),
+      message: '{VALUE} is not a valid transaction type'
+    },
+    required: [true, 'Transaction type is required']
   },
   status: {
     type: String,

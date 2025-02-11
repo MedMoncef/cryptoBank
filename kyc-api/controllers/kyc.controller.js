@@ -1,10 +1,22 @@
 import KYC from '../models/kyc.model.js';
 import CustomError from '../utils/CustomError.js';
 
+const USERS_SERVICE_URL = 'http://localhost:5000/api/users/api/users';
+
 export const submitDocuments = async (req, res, next) => {
     try {
         const { userId } = req.params;
         const { documents } = req.body;
+
+        try {
+            const response = await axios.get(`${USERS_SERVICE_URL}/${userId}`);
+
+            if (!response.data.id) {
+                return next(new CustomError('User does not exist', 404));
+            }
+        } catch (error) {
+            return next(new CustomError('Failed to verify user existence', 500));
+        }
 
         let kyc = await KYC.findOne({ userId });
         if (kyc) {

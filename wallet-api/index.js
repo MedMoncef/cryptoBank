@@ -3,7 +3,7 @@ dotenv.config();
 
 import app from './app.js';
 
-const PORT = process.env.PORT || 3005;
+const PORT = process.env.PORT || 3004;
 
 app.listen(PORT, () => {
     console.log(`Server Wallets is running on http://localhost:${PORT}`);
