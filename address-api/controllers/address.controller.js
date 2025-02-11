@@ -67,7 +67,10 @@ export const deleteAddress = async (req, res, next) => {
         if (!address) {
             return next(new CustomError('Address not found', 404));
         }
-        res.status(204).send(); // No content to send back
+        res.status(204).json({
+            success: true, 
+            message: 'Address successfully deleted' 
+        });
     } catch (error) {
         next(new CustomError(error.message, 500));
     }

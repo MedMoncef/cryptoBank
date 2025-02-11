@@ -1,0 +1,559 @@
+{
+	"info": {
+		"_postman_id": "f89932b6-7a45-4b3f-8b6a-e36fdb7d4260",
+		"name": "EXAMEN",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "24598275"
+	},
+	"item": [
+		{
+			"name": "users",
+			"item": [
+				{
+					"name": "users",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/users/api/users/users",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"users",
+								"api",
+								"users",
+								"users"
+							],
+							"query": [
+								{
+									"key": "populate",
+									"value": "button.buttonIcon",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "user by id",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/users/api/users/67a083e055ae80984d16a8a4",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"users",
+								"api",
+								"users",
+								"67a083e055ae80984d16a8a4"
+							],
+							"query": [
+								{
+									"key": "populate",
+									"value": "button.buttonIcon",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create user",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"nom\": \"John Doe\",\r\n  \"email\": \"bbbbb@example.com\",\r\n  \"telephone\": \"1234567890\",\r\n  \"motDePasse\": \"password123\",\r\n  \"addressData\": {\r\n    \"street\": \"123 Main St\",\r\n    \"city\": \"Anytowssssssssnaaaa\",\r\n    \"state\": \"Anystataasssssssssaae\",\r\n    \"postalCode\": \"123aaa45\",\r\n    \"country\": \"CountryNaaaaame\"\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/users/api/users/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"users",
+								"api",
+								"users",
+								""
+							],
+							"query": [
+								{
+									"key": "populate",
+									"value": "button.buttonIcon",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "http://localhost:5000/api/users/api/users/6733ad7e9d6cf4919d7a6934"
+					},
+					"response": []
+				},
+				{
+					"name": "patch user",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"nom\": \"John Doe\",\r\n  \"email\": \"bbbbb@example.com\",\r\n  \"telephone\": \"1234567890\",\r\n  \"motDePasse\": \"password123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:5000/api/users/api/users/673cd7bd784049b8d252440a"
+					},
+					"response": []
+				},
+				{
+					"name": "assignAddressToUser",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "addresses",
+			"item": [
+				{
+					"name": "get",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/addresses/api/addresses/addresses",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"addresses",
+								"api",
+								"addresses",
+								"addresses"
+							],
+							"query": [
+								{
+									"key": "populate",
+									"value": "button.buttonIcon",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get by id",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/addresses/api/addresses/6733ad7e9d6cf4919d7a6932",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"addresses",
+								"api",
+								"addresses",
+								"6733ad7e9d6cf4919d7a6932"
+							],
+							"query": [
+								{
+									"key": "populate",
+									"value": "button.buttonIcon",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create address",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"street\": \"123 Main St\",\r\n    \"city\": \"Anytown\",\r\n    \"state\": \"Anystate\",\r\n    \"postalCode\": \"12345\",\r\n    \"country\": \"CountryName\",\r\n    \"userId\": \"6733ad7e9d6cf4919d7a6934\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/addresses/api/addresses/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"addresses",
+								"api",
+								"addresses",
+								""
+							],
+							"query": [
+								{
+									"key": "populate",
+									"value": "button.buttonIcon",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "http://localhost:5000/api/addresses/api/addresses/679921fb047bebc121289057"
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"street\": \"123 Main St\",\r\n    \"city\": \"Anytown\",\r\n    \"state\": \"Anystate\",\r\n    \"postalCode\": \"12345\",\r\n    \"country\": \"CountryName\",\r\n    \"userId\": \"6733ad7e9d6cf4919d7a6934\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:5000/api/addresses/api/addresses/679921fd047bebc12128905b"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "wallet",
+			"item": [
+				{
+					"name": "create a wallet",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userId\": \"6733ad7e9d6cf4919d7a6934\",\r\n    \"currency\": \"USD\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:5000/api/wallets/api/wallets/"
+					},
+					"response": []
+				},
+				{
+					"name": "get user balance",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:5000/api/wallets/api/wallets/6733ad7e9d6cf4919d7a6934/balance"
+					},
+					"response": []
+				},
+				{
+					"name": "deposit",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"amount\": 100\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:5000/api/wallets/api/wallets/6733ad7e9d6cf4919d7a6934/deposit"
+					},
+					"response": []
+				},
+				{
+					"name": "withdraw",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"amount\": 50\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:5000/api/wallets/api/wallets/6733ad7e9d6cf4919d7a6934/withdraw"
+					},
+					"response": []
+				},
+				{
+					"name": "transfer",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"receiverId\": \"6733ad7e9d6cf4919d7a6934\",\r\n    \"amount\": 25\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:5000/api/wallets/api/wallets/6733ad7e9d6cf4919d7a6934/transfer"
+					},
+					"response": []
+				},
+				{
+					"name": "transactions",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:5000/api/wallets/api/wallets/6733ad7e9d6cf4919d7a6934/transactions"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "transaction",
+			"item": [
+				{
+					"name": "create transaction",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"sender\": \"65bf2d7c839f6d9c54f001a1\",\r\n    \"receiver\": \"65bf2d7c839f6d9c54f001a3\",\r\n    \"amount\": 100,\r\n    \"walletId\": \"65bf2d7c839f6d9c54f001b2\",\r\n    \"type\": \"TRANSFER\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:5000/api/transactions/api/transactions/"
+					},
+					"response": []
+				},
+				{
+					"name": "get all transactions",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:5000/api/transactions/api/transactions"
+					},
+					"response": []
+				},
+				{
+					"name": "get by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:5000/api/transactions/api/transactions/67ab96fe5c72e8f6f2e1fac0"
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"status\": \"COMPLETED\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:5000/api/transactions/api/transactions/67ab96fe5c72e8f6f2e1fac0"
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "http://localhost:3003/api/transactions/67ab97e25c72e8f6f2e1fac8"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "kyc",
+			"item": [
+				{
+					"name": "post kyc doc",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"documents\": [\"doc1.pdf\", \"doc2.pdf\"]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:5000/api/kycs/api/kycs/6733ad7e9d6cf4919d7a6932/documents"
+					},
+					"response": []
+				},
+				{
+					"name": "verify",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"status\": \"APPROVED\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:5000/api/kycs/api/kycs/6733ad7e9d6cf4919d7a6932/verify"
+					},
+					"response": []
+				},
+				{
+					"name": "get all",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:5000/api/kycs/api/kycs/6733ad7e9d6cf4919d7a6932/documents"
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"documents\": [\"dossc1.pdf\", \"dossc2.pdf\"]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:5000/api/kycs/api/kycs/6733ad7e9d6cf4919d7a6932/documents"
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

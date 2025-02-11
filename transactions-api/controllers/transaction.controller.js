@@ -58,7 +58,10 @@ export const deleteTransaction = async (req, res, next) => {
         if (!transaction) {
             return next(new CustomError('No transaction found with that ID', 404));
         }
-        res.status(204).json(null);
+        res.status(200).json({ 
+            success: true, 
+            message: 'Transaction successfully deleted' 
+        });
     } catch (error) {
         next(new CustomError(error.message, 500));
     }
