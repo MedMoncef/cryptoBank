@@ -162,8 +162,18 @@
 				{
 					"name": "assignAddressToUser",
 					"request": {
-						"method": "GET",
-						"header": []
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:5000/api/users/api/users/673cd7bd784049b8d252440a/address/679921fd047bebc12128905b"
 					},
 					"response": []
 				}
