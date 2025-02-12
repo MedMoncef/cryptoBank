@@ -1,0 +1,62 @@
+@startuml UserCase
+left to right direction
+skinparam packageStyle rectangle
+
+actor "Utilisateur" as User
+actor "Marchand" as Merchant
+actor "Administrateur" as Admin
+actor "Staff" as Staff
+
+package "Utilisateur Actions" {
+    usecase "Gérer son compte" as UC_ManageAccount
+    usecase "Gérer son portefeuille" as UC_ManageWallet
+    usecase "Gérer ses transactions" as UC_ManageTransactions
+    usecase "Acheter / Vendre des crypto" as UC_BuySellCrypto
+    usecase "Gérer l'identité (KYC)" as UC_ManageKYC
+    usecase "Consulter l'historique des transactions" as UC_ViewTransactions
+}
+
+package "Marchand Actions" {
+    usecase "Gérer les paiements" as UC_ManagePayments
+    usecase "Gérer les transactions" as UC_ManageMerchantTransactions
+    usecase "Gérer les paramètres de paiement" as UC_ManagePaymentSettings
+    usecase "Consulter les rapports" as UC_ViewReports
+}
+
+package "Administrateur Actions" {
+    usecase "Gérer les utilisateurs" as UC_ManageUsers
+    usecase "Superviser les transactions" as UC_MonitorTransactions
+    usecase "Gérer la conformité (KYC)" as UC_ManageCompliance
+    usecase "Gérer les crypto-monnaies" as UC_ManageCryptos
+    usecase "Consulter les statistiques et rapports" as UC_ViewStats
+}
+
+package "Staff Actions" {
+    usecase "Gérer le support" as UC_ManageSupport
+    usecase "Modérer les contenus" as UC_ModerateContent
+    usecase "Assister les utilisateurs (KYC)" as UC_AssistKYC
+}
+
+User --> UC_ManageAccount
+User --> UC_ManageWallet
+User --> UC_ManageTransactions
+User --> UC_BuySellCrypto
+User --> UC_ManageKYC
+User --> UC_ViewTransactions
+
+Merchant --> UC_ManagePayments
+Merchant --> UC_ManageMerchantTransactions
+Merchant --> UC_ManagePaymentSettings
+Merchant --> UC_ViewReports
+
+Admin --> UC_ManageUsers
+Admin --> UC_MonitorTransactions
+Admin --> UC_ManageCompliance
+Admin --> UC_ManageCryptos
+Admin --> UC_ViewStats
+
+Staff --> UC_ManageSupport
+Staff --> UC_ModerateContent
+Staff --> UC_AssistKYC
+
+@enduml

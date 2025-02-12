@@ -4,6 +4,7 @@ import axios from 'axios';
 
 const TRANSACTION_SERVICE_URL = 'http://localhost:5000/api/transactions/api/transactions';
 const USERS_SERVICE_URL = 'http://localhost:5000/api/users/api/users';
+const CURRENCY_SERVICE_URL = 'http://localhost:5000/api/currencies/api/currencies';
 
 // Helper function to verify user existence
 const verifyUser = async (userId) => {
@@ -18,12 +19,27 @@ const verifyUser = async (userId) => {
     }
 };
 
+const verifyCurrency = async (symbol) => {
+    try {
+        const response = await axios.get(`${CURRENCY_SERVICE_URL}/${symbol}`);
+        if (!response.data._id) {
+            throw new CustomError('Currency does not exist', 404);
+        }
+        return response.data;
+    } catch (error) {
+        throw new CustomError('Failed to verify currency existence', 500);
+    }
+};
+
 export const createWallet = async (req, res, next) => {
     try {
         const { userId, currency } = req.body;
         
         // Verify user exists
         await verifyUser(userId);
+
+        // Verify currency exists
+        await verifyCurrency(currency);
 
         // Check if wallet already exists for this user
         const existingWallet = await Wallet.findOne({ userId });
@@ -34,6 +50,16 @@ export const createWallet = async (req, res, next) => {
         const wallet = new Wallet({ userId, currency });
         await wallet.save();
         res.status(201).json(wallet);
+    } catch (error) {
+        next(new CustomError(error.message, error.status || 400));
+    }
+};
+
+export const getExchangeRate = async (req, res, next) => {
+    try {
+        const { fromCurrency, toCurrency } = req.params;
+        const response = await axios.get(`${CURRENCY_SERVICE_URL}/exchange-rate/${fromCurrency}/${toCurrency}`);
+        res.status(200).json(response.data);
     } catch (error) {
         next(new CustomError(error.message, error.status || 400));
     }
@@ -59,7 +85,7 @@ export const getWalletBalance = async (req, res, next) => {
 export const addFunds = async (req, res, next) => {
     try {
         const { userId } = req.params;
-        const { amount } = req.body;
+        const { amount, currency: sourceCurrency } = req.body;
         
         // Verify user exists
         await verifyUser(userId);
@@ -69,19 +95,30 @@ export const addFunds = async (req, res, next) => {
             throw new CustomError('Wallet not found', 404);
         }
 
+        let finalAmount = amount;
+        // If source currency is different from wallet currency, convert the amount
+        if (sourceCurrency !== wallet.currency) {
+            const exchangeRate = await axios.get(
+                `${CURRENCY_SERVICE_URL}/exchange-rate/${sourceCurrency}/${wallet.currency}`
+            );
+            finalAmount = amount * exchangeRate.data.rate;
+        }
+
         // Create transaction record
         const transactionResponse = await axios.post(TRANSACTION_SERVICE_URL, {
             sender: 'SYSTEM',
             receiver: userId,
-            amount: amount,
+            amount: finalAmount,
             walletId: wallet._id,
             type: 'DEPOSIT',
-            status: 'PENDING'
+            status: 'PENDING',
+            sourceCurrency,
+            targetCurrency: wallet.currency
         });
 
         try {
             // Update wallet balance
-            wallet.balance += Number(amount);
+            wallet.balance += Number(finalAmount);
             await wallet.save();
 
             // Update transaction status to completed

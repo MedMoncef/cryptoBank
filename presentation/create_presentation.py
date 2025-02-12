@@ -1,134 +1,144 @@
 from pptx import Presentation
 from pptx.util import Inches, Pt
+from pptx.enum.text import PP_PARAGRAPH_ALIGNMENT
 from datetime import date
 
 # Create a new presentation
 prs = Presentation()
 
+# Helper function to add a slide with title and content
+def add_slide(title_text, content_text, layout_index=1):
+    slide_layout = prs.slide_layouts[layout_index]  # using a Title and Content layout
+    slide = prs.slides.add_slide(slide_layout)
+    slide.shapes.title.text = title_text
+    # Format content text with bullet points
+    body = slide.placeholders[1].text_frame
+    body.clear()  # clear any existing paragraphs
+    for line in content_text.split("\n"):
+        p = body.add_paragraph()
+        p.text = line
+        p.font.size = Pt(18)
+        p.level = 0
+    return slide
+
 # --------- Slide 1: Title Slide ---------
-slide_layout = prs.slide_layouts[0]  # Title slide layout
-slide = prs.slides.add_slide(slide_layout)
+title_slide_layout = prs.slide_layouts[0]  # Title Slide layout
+slide = prs.slides.add_slide(title_slide_layout)
 slide.shapes.title.text = "Crypto Bank Project"
-slide.placeholders[1].text = "Your Name\nDate: {:%B %d, %Y}\nCourse Name".format(date.today())
+# Subtitle placeholder (typically placeholder 1 in the title slide)
+slide.placeholders[1].text = "Your Name\nDate: {:%B %d, %Y}\nCourse: Advanced Web Projects".format(date.today())
 
 # --------- Slide 2: Introduction ---------
-slide_layout = prs.slide_layouts[1]  # Title and Content layout
-slide = prs.slides.add_slide(slide_layout)
-slide.shapes.title.text = "Introduction"
-content = (
-    "Overview of Crypto Bank project:\n"
-    "• Purpose: Secure, efficient crypto banking solution\n"
-    "• Technologies: Node.js, Next.js, Database, and more\n"
-    "• Goal: Seamless crypto and fiat transactions"
+intro_text = (
+    "Overview:\n"
+    "• A secure and efficient crypto banking solution\n"
+    "• Built using Node.js for the backend and Next.js for the frontend\n"
+    "• Designed to support both crypto and fiat transactions seamlessly"
 )
-slide.placeholders[1].text = content
+add_slide("Introduction", intro_text)
 
 # --------- Slide 3: Features Overview ---------
-slide = prs.slides.add_slide(slide_layout)
-slide.shapes.title.text = "Features Overview"
-features = (
+features_text = (
+    "Key Features:\n"
     "• User Account Management\n"
-    "• Wallet System\n"
-    "• KYC Verification\n"
-    "• Merchant Transactions\n"
-    "• Admin & Staff Management\n"
+    "• Integrated Wallet System\n"
+    "• KYC Verification Process\n"
+    "• Merchant Payment Processing\n"
+    "• Admin & Staff Management Tools\n"
     "• Transaction Processing (Crypto & Fiat)"
 )
-slide.placeholders[1].text = features
+add_slide("Features Overview", features_text)
 
 # --------- Slide 4: Class Diagram ---------
-slide = prs.slides.add_slide(slide_layout)
-slide.shapes.title.text = "Class Diagram"
 diagram_text = (
-    "Class Diagram Overview:\n"
-    "• User, Wallet, KYC, Merchant, Admin, Staff, Transaction\n"
-    "• Relationships and key methods illustrated\n"
-    "• (Insert your diagram image below or reference it)"
+    "Class Diagram Details:\n"
+    "• Main entities: User, Wallet, KYC, Merchant, Admin, Staff, Transaction\n"
+    "• Relationships & key methods illustrated\n"
+    "• (Insert diagram image in the slide for visual reference)"
 )
-slide.placeholders[1].text = diagram_text
-
-# Optional: Insert image for class diagram if available
-# Uncomment and modify the path if you have an image:
-# left = Inches(1); top = Inches(3); width = Inches(8)
-# slide.shapes.add_picture("path_to_class_diagram_image.png", left, top, width=width)
+slide_diagram = add_slide("Class Diagram", diagram_text)
+# Optional: Uncomment the following lines and update the path to insert your diagram image
+# left = Inches(1)
+# top = Inches(3.5)
+# width = Inches(8)
+# slide_diagram.shapes.add_picture("class_diagram.png", left, top, width=width)
 
 # --------- Slide 5: System Architecture ---------
-slide = prs.slides.add_slide(slide_layout)
-slide.shapes.title.text = "System Architecture"
-architecture = (
-    "• Frontend: Next.js\n"
-    "• Backend: Node.js API server\n"
-    "• Database: SQL/NoSQL\n"
-    "• Communication: RESTful API endpoints\n"
-    "• Security: Authentication, encryption, etc."
+architecture_text = (
+    "Architecture Overview:\n"
+    "• Frontend: Next.js for dynamic user interfaces\n"
+    "• Backend: Node.js with RESTful API endpoints\n"
+    "• Database: SQL/NoSQL options depending on needs\n"
+    "• Security: JWT authentication and data encryption\n"
+    "• Communication: API-driven interactions between services"
 )
-slide.placeholders[1].text = architecture
+add_slide("System Architecture", architecture_text)
 
 # --------- Slide 6: User Flow ---------
-slide = prs.slides.add_slide(slide_layout)
-slide.shapes.title.text = "User Flow"
-user_flow = (
+user_flow_text = (
+    "User Journey:\n"
     "1. User Registration & KYC Verification\n"
     "2. Wallet Creation & Funding\n"
-    "3. Transaction Initiation (Crypto/Fiat)\n"
+    "3. Initiation of Crypto/Fiat Transactions\n"
     "4. Merchant Payment Processing\n"
-    "5. Admin/Staff Oversight & Support"
+    "5. Ongoing Admin/Staff Management"
 )
-slide.placeholders[1].text = user_flow
+add_slide("User Flow", user_flow_text)
 
 # --------- Slide 7: Technologies Used ---------
-slide = prs.slides.add_slide(slide_layout)
-slide.shapes.title.text = "Technologies Used"
-tech = (
+technologies_text = (
+    "Technology Stack:\n"
     "• Frontend: Next.js, Tailwind CSS (or another UI framework)\n"
-    "• Backend: Node.js (Express/NestJS)\n"
-    "• Database: MongoDB/PostgreSQL (or others)\n"
+    "• Backend: Node.js (Express or NestJS)\n"
+    "• Database: MongoDB / PostgreSQL\n"
     "• Authentication: JWT, OAuth\n"
-    "• Payment Integration: Crypto APIs (e.g., Binance, Coinbase)\n"
-    "• Tools: Docker, CI/CD pipelines"
+    "• Payment Integration: APIs (e.g., Binance, Coinbase)\n"
+    "• DevOps: Docker, CI/CD pipelines"
 )
-slide.placeholders[1].text = tech
+add_slide("Technologies Used", technologies_text)
 
 # --------- Slide 8: Challenges & Solutions ---------
-slide = prs.slides.add_slide(slide_layout)
-slide.shapes.title.text = "Challenges & Solutions"
-challenges = (
-    "• Security Concerns: Implement robust encryption & authentication\n"
-    "• Transaction Speed: Optimize API performance\n"
-    "• Scalability: Design for future growth and multi-chain support"
+challenges_text = (
+    "Project Challenges:\n"
+    "• Ensuring robust security and data encryption\n"
+    "• Optimizing transaction speed and reliability\n"
+    "• Scalability to handle growing user base\n\n"
+    "Solutions:\n"
+    "• Implementing state-of-the-art security protocols\n"
+    "• Performance tuning of API endpoints\n"
+    "• Designing with scalability in mind (microservices, load balancing)"
 )
-slide.placeholders[1].text = challenges
+add_slide("Challenges & Solutions", challenges_text)
 
 # --------- Slide 9: Future Enhancements ---------
-slide = prs.slides.add_slide(slide_layout)
-slide.shapes.title.text = "Future Enhancements"
-future = (
-    "• Multi-chain support\n"
-    "• Staking & lending features\n"
-    "• Improved UI/UX design\n"
-    "• Advanced analytics & reporting"
+enhancements_text = (
+    "Planned Enhancements:\n"
+    "• Multi-chain support for broader crypto integration\n"
+    "• Additional financial features (staking, lending)\n"
+    "• Advanced analytics and reporting tools\n"
+    "• Continuous UI/UX improvements based on user feedback"
 )
-slide.placeholders[1].text = future
+add_slide("Future Enhancements", enhancements_text)
 
 # --------- Slide 10: Conclusion ---------
-slide = prs.slides.add_slide(slide_layout)
-slide.shapes.title.text = "Conclusion"
-conclusion = (
-    "Crypto Bank project aims to revolutionize the way digital transactions are handled.\n"
-    "With a focus on security, scalability, and user experience, this platform is poised for success."
+conclusion_text = (
+    "Conclusion:\n"
+    "• The Crypto Bank project aims to revolutionize digital transactions.\n"
+    "• Focus on security, scalability, and user experience sets it apart.\n"
+    "• A solid foundation built with modern technologies paves the way for future innovation."
 )
-slide.placeholders[1].text = conclusion
+add_slide("Conclusion", conclusion_text)
 
 # --------- Slide 11: Demo (Optional) ---------
-slide = prs.slides.add_slide(slide_layout)
-slide.shapes.title.text = "Demo"
-demo = (
-    "• Screenshots of the application in action\n"
-    "• Live demo URL (if applicable)\n"
-    "• Key interactions and user interface highlights"
+demo_text = (
+    "Demo Overview:\n"
+    "• Screenshots or a short video demo of the application\n"
+    "• Key interactions and user interface highlights\n"
+    "• Live demo URL if available"
 )
-slide.placeholders[1].text = demo
+add_slide("Demo", demo_text)
 
 # Save the presentation to a file
-prs.save("CryptoBankPresentation.pptx")
-print("Presentation created successfully as 'CryptoBankPresentation.pptx'")
+output_filename = "CryptoBankPresentation.pptx"
+prs.save(output_filename)
+print(f"Presentation created successfully as '{output_filename}'")

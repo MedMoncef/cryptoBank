@@ -1,6 +1,6 @@
 @startuml ClassDiagram
 
-abstract class User {
+class User {
     - Nom : String <<required>>
     - Email : String <<required>>
     - Telephone : String <<optional>>
@@ -17,26 +17,13 @@ abstract class User {
     + consulterHistoriqueTransactions()
 }
 
-class Wallet {
+class Currency {
     - balance : Double
     - currency : String
     --
     + addFunds(amount: Double)
     + withdrawFunds(amount: Double)
     + viewBalance() : Double
-    + processTransaction(transaction: Transaction)
-}
-
-class Currency {
-    - currencyId : String
-    - name : String
-    - symbol : String
-    - type : Enum
-    - exchangeRate : Double
-    --
-    + getCurrentRate()
-    + updateExchangeRate()
-    + getHistoricalRates()
 }
 
 class Transaction {
@@ -82,13 +69,14 @@ class Staff {
     + assisterUtilisateursKYC()
 }
 
-User <|-- Merchant
-User <|-- Admin
-User <|-- Staff
-
-User "1" -- "1" Wallet
-Wallet "1" -- "0..*" Transaction
-User "1" -- "1" KYC
-Wallet "1" -- "1..*" Currency
+User "1" -- "1..*" Currency : owns
+User "1" -- "0..*" Transaction : initiates
+User "1" -- "1" KYC : has
+User <|-- Merchant : specializes
+User <|-- Admin : specializes
+User <|-- Staff : specializes
+Merchant "1" -- "0..*" Transaction : processes
+Admin "1" -- "0..*" User : manages
+Staff "1" -- "0..*" User : assists
 
 @enduml
