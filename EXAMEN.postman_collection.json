@@ -221,6 +221,14 @@
 						"url": "http://localhost:5000/api/users/api/users/login"
 					},
 					"response": []
+				},
+				{
+					"name": "Statistic",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
 				}
 			]
 		},

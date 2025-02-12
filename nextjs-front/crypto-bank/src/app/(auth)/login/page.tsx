@@ -28,7 +28,7 @@ export default function LoginPage() {
       document.cookie = `token=${data.token}; path=/; max-age=${60 * 60 * 24}; SameSite=Strict; ${process.env.NODE_ENV === "production" ? "Secure" : ""}`
 
       // Redirect to home page
-      router.push("/")
+      window.location.replace('/')
     },
     onError: (error: Error) => {
       setError(error.message)

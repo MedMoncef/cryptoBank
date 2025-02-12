@@ -11,7 +11,7 @@ const userSchema = new mongoose.Schema({
     email: { type: String, required: true, unique: true },
     telephone: { type: String },
     motDePasse: { type: String, required: true },
-    statut: { type: String, enum: Object.values(statusEnum), default: statusEnum.INACTIVE },
+    statut: { type: String, enum: Object.values(statusEnum), default: statusEnum.ACTIVE },
     statutVerificationEmail: { type: Boolean, default: false },
     statutVerificationTelephone: { type: Boolean, default: false },
     address: { type: mongoose.Schema.Types.ObjectId, ref: 'Address' },
