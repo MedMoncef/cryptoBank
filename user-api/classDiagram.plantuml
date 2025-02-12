@@ -83,8 +83,8 @@ class Staff {
 }
 
 User <|-- Merchant
-User <|-- Admin
-User <|-- Staff
+Merchant <|-- Staff
+Staff <|-- Admin
 
 User "1" -- "1" Wallet
 Wallet "1" -- "0..*" Transaction
