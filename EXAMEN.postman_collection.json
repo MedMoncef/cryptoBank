@@ -176,6 +176,51 @@
 						"url": "http://localhost:5000/api/users/api/users/673cd7bd784049b8d252440a/address/679921fd047bebc12128905b"
 					},
 					"response": []
+				},
+				{
+					"name": "User Authentication API",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nom\": \"moncef zmander\",\r\n    \"email\": \"moncef@example.com\",\r\n    \"telephone\": \"+1234567890\",\r\n    \"motDePasse\": \"securepassword123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:5000/api/users/api/users/register"
+					},
+					"response": []
+				},
+				{
+					"name": "Verify Email",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:5000/api/users/api/users/verify-email/{{verificationToken}}"
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"moncef@example.com\",\r\n    \"motDePasse\": \"securepassword123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:5000/api/users/api/users/login"
+					},
+					"response": []
 				}
 			]
 		},

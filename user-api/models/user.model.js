@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import bcrypt from 'bcrypt';
 
 const statusEnum = {
     ACTIVE: 'ACTIVE',
@@ -23,5 +24,16 @@ userSchema.virtual('id').get(function () {
 userSchema.set('toJSON', {
     virtuals: true,
 });
+
+userSchema.pre('save', async function(next) {
+    if (this.isModified('motDePasse')) {
+        this.motDePasse = await bcrypt.hash(this.motDePasse, 10);
+    }
+    next();
+});
+
+userSchema.methods.comparePassword = async function(candidatePassword) {
+    return bcrypt.compare(candidatePassword, this.motDePasse);
+};
 
 export default mongoose.model('User', userSchema);
