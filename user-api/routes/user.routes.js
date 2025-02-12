@@ -4,6 +4,7 @@ import * as authController from '../controllers/auth.controller.js';
 
 const router = express.Router();
 
+router.get('/statistics', userController.getUserStatistics);
 router.post('/', userController.createUser);
 router.get('/users', userController.getAllUsers);
 router.get('/:id', userController.getUserById);

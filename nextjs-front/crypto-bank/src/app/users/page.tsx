@@ -9,6 +9,7 @@ import { PlusIcon } from "lucide-react"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { DeleteUserDialog } from "../_components/delete-user-dialog"
 import { useToast } from "@/hooks/use-toast"
+import { useRouter } from "next/navigation"
 
 export default function UsersPage() {
   const [users, setUsers] = useState<User[]>([])
@@ -17,10 +18,16 @@ export default function UsersPage() {
   const [editingUser, setEditingUser] = useState<User | null>(null)
   const [deletingUser, setDeletingUser] = useState<User | null>(null)
   const { toast } = useToast()
+  const router = useRouter()
 
   useEffect(() => {
-    fetchUsers()
-  }, [])
+    const token = document.cookie.replace(/(?:(?:^|.*;\s*)token\s*=\s*([^;]*).*$)|^.*$/, "$1")
+    if (!token) {
+      router.push("/login")
+    } else {
+      fetchUsers()
+    }
+  }, [router])
 
   const fetchUsers = async () => {
     setIsLoading(true)

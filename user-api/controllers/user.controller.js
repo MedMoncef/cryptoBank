@@ -242,3 +242,32 @@ export const deleteUser = async (req, res, next) => {
     next(new CustomError(error.message, error.status || 400));
   }
 };
+
+export const getUserStatistics = async (req, res, next) => {
+  try {
+    // Get total number of users
+    const totalUsers = await User.countDocuments();
+    
+    // Get count of active users
+    const activeUsers = await User.countDocuments({ statut: 'ACTIVE' });
+    
+    // Get count of inactive users
+    const inactiveUsers = await User.countDocuments({ statut: 'INACTIVE' });
+    
+    // Get count of verified email users
+    const verifiedEmailUsers = await User.countDocuments({ statutVerificationEmail: true });
+    
+    // Get count of verified phone users
+    const verifiedPhoneUsers = await User.countDocuments({ statutVerificationTelephone: true });
+
+    res.status(200).json({
+      totalUsers,
+      activeUsers,
+      inactiveUsers,
+      verifiedEmailUsers,
+      verifiedPhoneUsers
+    });
+  } catch (error) {
+    next(new CustomError(error.message, error.status || 500));
+  }
+};

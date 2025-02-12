@@ -8,7 +8,7 @@ import { Switch } from "@/components/ui/switch"
 
 interface UserFormProps {
   user?: User | null
-  onSubmit: (id: string | undefined, user: UserSubmissionData) => void
+  onSubmit: (id: string, user: UserSubmissionData) => void
   onCancel: () => void
 }
 
@@ -23,9 +23,9 @@ export function UserForm({ user, onSubmit, onCancel }: UserFormProps) {
       ? {
           street: user.address.street || "",
           city: user.address.city || "",
-          state: "", // Not present in the fetched data
+          state: "",
           postalCode: user.address.postalCode || "",
-          country: "", // Not present in the fetched data
+          country: "",
         }
       : undefined,
   })
@@ -39,21 +39,21 @@ export function UserForm({ user, onSubmit, onCancel }: UserFormProps) {
   }
 
   const handleAddressChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target
+    const { name, value } = e.target;
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     setFormData((prev) => ({
       ...prev,
       addressData: {
-        ...prev.addressData,
+        ...prev.addressData!,
         [name]: value,
       },
-    }))
-  }
+    }));
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     const submissionData = { ...formData }
     if (user) {
-      // If updating, remove the password field unless it's been changed
       if (!formData.motDePasse) {
         delete submissionData.motDePasse
       }
@@ -61,7 +61,7 @@ export function UserForm({ user, onSubmit, onCancel }: UserFormProps) {
     if (!includeAddress) {
       delete submissionData.addressData
     }
-    onSubmit(user?._id, submissionData)
+    onSubmit(user?._id ?? '1', submissionData)
   }
 
   return (
