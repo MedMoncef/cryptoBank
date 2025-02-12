@@ -12,6 +12,7 @@ const ADDRESSES_API = 'http://localhost:3002';
 const TRANSACTIONS_API = 'http://localhost:3003';
 const WALLET_API = 'http://localhost:3004';
 const KYC_API = 'http://localhost:3005';
+const CURRENCY_API = 'http://localhost:3006';
 
 // Proxy middleware configuration
 const usersProxy = createProxyMiddleware({
@@ -39,12 +40,18 @@ const kycProxy = createProxyMiddleware({
   changeOrigin: true,
 });
 
+const currencyProxy = createProxyMiddleware({
+  target: CURRENCY_API,
+  changeOrigin: true,
+});
+
 // Routes
 app.use('/api/users', usersProxy);
 app.use('/api/addresses', addressesProxy);
 app.use('/api/transactions', transactionsProxy);
 app.use('/api/wallets', walletProxy);
 app.use('/api/kycs', kycProxy);
+app.use('/api/currencies', currencyProxy);
 
 // Error handling
 app.use((err, req, res, next) => {

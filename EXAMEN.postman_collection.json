@@ -338,13 +338,13 @@
 			"name": "wallet",
 			"item": [
 				{
-					"name": "create a wallet",
+					"name": "Create Wallet",
 					"request": {
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"userId\": \"6733ad7e9d6cf4919d7a6934\",\r\n    \"currency\": \"USD\"\r\n}",
+							"raw": "{\r\n    \"userId\": \"673cd7bd784049b8d252440a\",\r\n    \"currency\": \"BTC\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -360,25 +360,25 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"url": "http://localhost:5000/api/wallets/api/wallets/6733ad7e9d6cf4919d7a6934/balance"
+						"url": "http://localhost:5000/api/wallets/api/wallets/673cd7bd784049b8d252440a/balance"
 					},
 					"response": []
 				},
 				{
-					"name": "deposit",
+					"name": "Add Funds with Currency Conversion",
 					"request": {
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"amount\": 100\r\n}",
+							"raw": "{\r\n    \"amount\": 100,\r\n    \"currency\": \"USD\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
 								}
 							}
 						},
-						"url": "http://localhost:5000/api/wallets/api/wallets/6733ad7e9d6cf4919d7a6934/deposit"
+						"url": "http://localhost:5000/api/wallets/api/wallets/673cd7bd784049b8d252440a/deposit"
 					},
 					"response": []
 				},
@@ -560,6 +560,119 @@
 							}
 						},
 						"url": "http://localhost:5000/api/kycs/api/kycs/6733ad7e9d6cf4919d7a6932/documents"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "currency",
+			"item": [
+				{
+					"name": "Get All Currencies",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:5000/api/currencies/api/currencies"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Active Currencies",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:5000/api/currencies/api/currencies/active"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Currency by Symbol",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:5000/api/currencies/api/currencies/BTC"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Exchange Rate",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:5000/api/currencies/api/currencies/exchange-rate/BTC/USD"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Currency",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"US Dollars\",\r\n    \"symbol\": \"USD\",\r\n    \"type\": \"FIAT\",\r\n    \"exchangeRate\": 1000\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:5000/api/currencies/api/currencies"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Currency",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"exchangeRate\": 46000\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:5000/api/currencies/api/currencies/BTC"
+					},
+					"response": []
+				},
+				{
+					"name": "Toggle Currency Status",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:5000/api/currencies/api/currencies/BTC/toggle-status"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Exchange Rate",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"exchangeRate\": 47000\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:5000/api/currencies/BTC/exchange-rate"
 					},
 					"response": []
 				}
